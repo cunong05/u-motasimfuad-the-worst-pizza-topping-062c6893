@@ -5,6 +5,10 @@ Writes one funny line pitching a terrible pizza topping to
 /output/entry.txt. Deterministic: the same entry text is written on
 every run, with no randomness, no network access and no input.
 
+The joke: the topping is dehydrated homework flakes drizzled with
+expired glue and sprinkled with Monday mornings — a topping so joyless
+it still claims to beat the pineapple-on-pizza debate.
+
 Gate (from the competition kit): the file must be UTF-8 text of
 1 to 200 characters, not only white space, on a single line.
 """
@@ -24,6 +28,8 @@ MAX_CHARS = 200
 
 def validate(text: str) -> None:
     """Enforce the kit gate: 1..200 chars, a single non-blank line."""
+    if not isinstance(text, str) or not text:
+        raise ValueError("entry must be a non-empty string")
     if not (MIN_CHARS <= len(text) <= MAX_CHARS):
         raise ValueError(
             f"entry is {len(text)} characters, outside the "
@@ -31,6 +37,8 @@ def validate(text: str) -> None:
         )
     if not text.strip():
         raise ValueError("entry is only white space")
+    if text != text.strip():
+        raise ValueError("entry must not have leading or trailing white space")
     if "\n" in text or "\r" in text:
         raise ValueError("entry must be a single line")
 
